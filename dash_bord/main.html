@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard Manager</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>Inventory Pro</h2>
+            <ul>
+                <li>Dashboard</li>
+                <li>Products</li>
+                <li>Sales Reports</li>
+                <li>Settings</li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>Sales Overview</h1>
+            </header>
+
+            <!-- KPI Cards -->
+            <section class="stats-grid">
+                <div class="card">
+        <h3>Total Sales (MAD)</h3>
+        <p class="value" id="total-sales">0.00 MAD</p>
+        <span class="trend positive">+12% vs last month</span>
+    </div>
+    <div class="card">
+        <h3>Avg. Sale Value</h3>
+        <p class="value" id="avg-sales">0.00 MAD</p>
+        <span class="trend">Steady</span>
+    </div>
+                <div class="card">
+                    <h3>Products Sold</h3>
+                    <p class="value" id="product-count">0</p>
+                </div>
+            </section>
+
+            <!-- Data Table -->
+            <section class="table-container">
+                <h3>Product Breakdown</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Units Sold</th>
+                            <th>Price</th>
+                            <th>Total Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-body">
+                        <!-- Data will be injected here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
