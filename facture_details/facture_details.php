@@ -22,7 +22,7 @@ $date_facture_val = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selected_id = $_POST['id'] ?? '';
     $selected_product = $_POST['product'] ?? '';
-    $selected_client = $_POST['client'] ?? '';
+    $selected_client = $_POST['id_clientfd'] ?? '';
     $selected_employe = $_POST['employe'] ?? '';
     $selected_type_payment = $_POST['type_payment'] ?? '';
     $quantity_val = $_POST['quantity'] ?? '';
@@ -35,12 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
     $total    = mysqli_real_escape_string($conn, $_POST['total']);
     $product  = mysqli_real_escape_string($conn, $_POST['product']);
-    $client   = mysqli_real_escape_string($conn, $_POST['client']);
-    $employe  = mysqli_real_escape_string($conn, $_POST['employe']);
+    $id_client = mysqli_real_escape_string($conn, $_POST['id_clientfd']);
+    //  $client   = mysqli_real_escape_string($conn, $_POST['client']);
+     $employe  = mysqli_real_escape_string($conn, $_POST['employe']);
     $date_facture_val = mysqli_real_escape_string($conn, $_POST['date_facture']);
     $type_payment = mysqli_real_escape_string($conn, $_POST['type_payment']);
 
-    if ($id === '') {
+    if ($id === '' && $quantity === '' && $total === '' && $product === '' && $id_client === '' && $employe === '' && $date_facture_val === '' && $type_payment === '') {
         echo "<p class='message-error'> Please select a Facture ID to update.</p>";
     } else {
         $fetch_sql = "SELECT quantity, product_id FROM facture_details WHERE id_facture_details = '$id'";
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $update_sql = "UPDATE facture_details SET quantity = '$quantity', prix = '$total', product_id = '$product', name_client = '$client', name_employe = '$employe', date_facture = '$date_facture_val', type_payment = '$type_payment' WHERE id_facture_details = '$id'";
+            $update_sql = "UPDATE facture_details SET quantity = '$quantity', prix = '$total', product_id = '$product', client_id = '$id_client', name_employe = '$employe', date_facture = '$date_facture_val', type_payment = '$type_payment' WHERE id_facture_details = '$id'";
             if ($conn->query($update_sql) === TRUE) {
                 echo "<p class='message-success'>Facture updated successfully.</p>";
             } else {
@@ -83,24 +84,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
- elseif (isset($_POST['quantity']) && isset($_POST['total']) && isset($_POST['product']) && isset($_POST['client']) && isset($_POST['add']) &&
-    !isset($_POST['delete'])) {
+elseif (
+    isset($_POST['quantity']) &&
+    isset($_POST['total']) &&
+    isset($_POST['product']) &&
+    isset($_POST['id_clientfd']) &&
+    isset($_POST['add']) &&
+    !isset($_POST['delete'])
+) {
 
     
     $quantity = mysqli_real_escape_string($conn, $_POST['quantity']);
     $total    = mysqli_real_escape_string($conn, $_POST['total']);
     $product  = mysqli_real_escape_string($conn, $_POST['product']);
-    $client   = mysqli_real_escape_string($conn, $_POST['client']);
+    $id_client = mysqli_real_escape_string($conn, $_POST['id_clientfd']);
     $employe  = mysqli_real_escape_string($conn, $_POST['employe']);
     $date_facture = mysqli_real_escape_string($conn, $_POST['date_facture']);
     $type_payment = mysqli_real_escape_string($conn, $_POST['type_payment']);
-    if(isset($_POST['add']) && (empty($quantity) && empty($total) && empty($product) && empty($client) && empty($employe) && empty($date_facture) && empty($type_payment))) {
+    if(isset($_POST['add']) && (empty($quantity) && empty($total) && empty($product) && empty($id_client) && empty($employe) && empty($date_facture) && empty($type_payment))) {
         echo "<p class='message-error'>Please fill in all required fields to add a facture.</p>";
       
 
     }
 
-    $sql = "INSERT INTO facture_details (quantity, prix, product_id, name_client, name_employe, date_facture, type_payment) VALUES ('$quantity', '$total', '$product', '$client', '$employe', '$date_facture', '$type_payment')";
+    $sql  = "INSERT INTO facture_details
+(quantity, prix, product_id,  name_employe, date_facture, type_payment,client_id)
+VALUES
+('$quantity', '$total', '$product',  '$employe', '$date_facture', '$type_payment','$id_client')";
+
+
     $up_stoke = "UPDATE stoke SET quantity = quantity - '$quantity' WHERE product_id_product = '$product'";
     if ($conn->query($up_stoke) === TRUE) {
         echo "<p class='message-success'>Record created and Stock updated successfully!</p>";
@@ -202,14 +214,27 @@ $res_payment = mysqli_query($conn, "SELECT id_payment, type_payment FROM payment
         <option value="<?php echo $row['id_product']; ?>" <?php echo $selected_product == $row['id_product'] ? 'selected' : ''; ?>><?php echo $row['type_product']; ?></option>
         <?php endwhile; ?>
     </select>
+  
+    <label for="client">Client</label>
 
-    <label for="client">Client Name</label>
-    <select name="client">
-        <option value="">Select Client</option>
-        <?php while($row = mysqli_fetch_assoc($re_fc)): ?>
-        <option value="<?php echo $row['name']; ?>" <?php echo $selected_client == $row['name'] ? 'selected' : ''; ?>><?php echo $row['name']; ?></option>
-        <?php endwhile; ?>
-    </select>
+<select name="id_clientfd">
+
+    <option value="">Select Client</option>
+
+    <?php while($row = mysqli_fetch_assoc($re_fc)): ?>
+
+        <option 
+            value="<?php echo $row['id_client']; ?>"
+
+            <?php echo $selected_client == $row['id_client'] ? 'selected' : ''; ?>>
+
+            <?php echo $row['name']; ?>
+
+        </option>
+
+    <?php endwhile; ?>
+
+</select>
 
       <label for="client">Employe Name</label>
     <select name="employe">
