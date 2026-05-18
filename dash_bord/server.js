@@ -162,6 +162,42 @@ app.post("/login", async (req, res) => {
     }
 });
 
+app.get("/sales", async (req, res) => {
+    try{
+        const sql = `SELECT 
+    COALESCE(SUM(quantity * prix), 0.00) AS total_sales_today,
+    COUNT(id_facture_details) AS product_sold
+FROM 
+    facture_details
+WHERE 
+    DATE(date_facture) = CURRENT_DATE;`;
+        const result = await pool.query(sql);
+        // Convert BigInt fields (returned by the driver) to numbers/strings
+        const sanitized = result.map(row => {
+            const out = {};
+            for (const key of Object.keys(row)) {
+                const val = row[key];
+                out[key] = (typeof val === 'bigint') ? Number(val) : val;
+               
+            }
+            return out;
+        });
+        console.log('Sanitized result:', sanitized);
+
+        return res.status(200).json({
+            success: true,
+            data: sanitized
+        });
+    }
+    catch(err){
+        return res.status(500).json({
+            message: "database error",
+            error: err.message
+        });
+    }
+});
+
+
 
 
 
