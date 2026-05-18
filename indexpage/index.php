@@ -19,9 +19,9 @@ $conn = mysqli_connect($host, $username, $password, $database);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$query = "SELECT f.id_facture_details, c.name, f.date_facture, f.quantity,f.prix
+$query = "SELECT f.id_facture_details, c.name, f.date_facture, f.quantity,f.prix,f.product_id
           FROM facture_details f 
-          JOIN client c ON c.name = f.name_client 
+          JOIN client c ON c.id_client = f.client_id
           ORDER BY f.date_facture DESC ";
 $result = mysqli_query($conn, $query);
 
@@ -38,6 +38,7 @@ $result = mysqli_query($conn, $query);
                 </div>
                 <h3>Name Client: <?php echo $row['name']; ?></h3>
                 <p class="date">Date of Facture: <?php echo $row['date_facture']; ?></p>
+                <p class="product">Product ID: <?php echo $row['product_id']; ?></p>
                 <div class="amount">Total: <?php echo number_format($row['quantity'] * $row['prix']); ?> Dhs</div>
             </div>
         <?php endwhile; ?>
