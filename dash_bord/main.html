@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Dashboard Manager</title>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
@@ -11,11 +13,11 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <h2>Inventory Pro</h2>
-            <ul>
-                <li>Dashboard</li>
-                <li>Products</li>
-                <li>Sales Reports</li>
-                <li>Settings</li>
+            <ul class="nav-links">
+                    <li><button class="nav-btn"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></button></li>
+                    <li><button class="nav-btn"><i class="fa-solid fa-box"></i> <span>Products</span></button></li>
+                    <li><button class="nav-btn"><i class="fa-solid fa-file-invoice-dollar"></i> <span>Sales Reports</span></button></li>
+                    <li><button class="nav-btn"><i class="fa-solid fa-gear"></i> <span>Settings</span></button></li>
             </ul>
         </nav>
 
@@ -28,15 +30,15 @@
             <!-- KPI Cards -->
             <section class="stats-grid">
                 <div class="card">
-        <h3>Total Sales (MAD)</h3>
-        <p class="value" id="total-sales">0.00 MAD</p>
-        <span class="trend positive">+12% vs last month</span>
-    </div>
-    <div class="card">
-        <h3>Avg. Sale Value</h3>
-        <p class="value" id="avg-sales">0.00 MAD</p>
-        <span class="trend">Steady</span>
-    </div>
+                    <h3>Total Sales (MAD)</h3>
+                    <p class="value" id="total-sales"></p>
+                    <span class="trend positive">Current Total sales</span>
+                </div>
+                <div class="card">
+                    <h3>Avg. Sale Value</h3>
+                    <p class="value" id="avg-sales">0.00 MAD</p>
+                    <span class="trend">Steady</span>
+                </div>
                 <div class="card">
                     <h3>Products Sold</h3>
                     <p class="value" id="product-count">0</p>
@@ -62,5 +64,6 @@
             </section>
         </main>
     </div>
+    <script src="main.js"></script>
 </body>
 </html>
