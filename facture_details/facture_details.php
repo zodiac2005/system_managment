@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $update_sql = "UPDATE facture_details SET quantity = '$quantity', prix = '$total', product_id = '$product', client_id = '$id_client', name_employe = '$employe', date_facture = '$date_facture_val', type_payment = '$type_payment' WHERE id_facture_details = '$id'";
+            $update_sql = "UPDATE facture_details SET quantity = '$quantity', prix = '$total', product_id = '$product', client_id = '$id_client', employe_id = '$employe', date_facture = '$date_facture_val', type_payment = '$type_payment' WHERE id_facture_details = '$id'";
             if ($conn->query($update_sql) === TRUE) {
                 echo "<p class='message-success'>Facture updated successfully.</p>";
             } else {
@@ -108,10 +108,12 @@ elseif (
     }
 
     $sql  = "INSERT INTO facture_details
-(quantity, prix, product_id,  name_employe, date_facture, type_payment,client_id)
+(quantity, prix, product_id,  employe_id, date_facture, type_payment,client_id)
 VALUES
 ('$quantity', '$total', '$product',  '$employe', '$date_facture', '$type_payment','$id_client')";
 
+ header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+    
 
     $up_stoke = "UPDATE stoke SET quantity = quantity - '$quantity' WHERE product_id_product = '$product'";
     if ($conn->query($up_stoke) === TRUE) {
@@ -119,6 +121,7 @@ VALUES
     } else {
         echo "<p class='message-error'>Facture added but Stock Error: " . $conn->error . "</p>";
     }
+   
   
 
 
@@ -240,7 +243,7 @@ $res_payment = mysqli_query($conn, "SELECT id_payment, type_payment FROM payment
     <select name="employe">
         <option value="">Select Employe</option>
         <?php while($row = mysqli_fetch_assoc($re_employe)): ?>
-        <option value="<?php echo $row['name']; ?>" <?php echo $selected_employe == $row['name'] ? 'selected' : ''; ?>><?php echo $row['name']; ?></option>
+        <option value="<?php echo $row['id_employe']; ?>" <?php echo $selected_employe == $row['id_employe'] ? 'selected' : ''; ?>><?php echo $row['name']; ?></option>
         <?php endwhile; ?>
     </select>
 
