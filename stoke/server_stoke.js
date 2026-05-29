@@ -8,14 +8,15 @@ const pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'mydb'
+    database: 'mydb_store',
+    connectionLimit: 30
 });
 
 app.post('/stoke', async (req, res) => {
     const { quantity,type_product} = req.body;
     try {
         const conn = await pool.getConnection();
-        await conn.query('INSERT INTO stoke ( quantity,product_id_product) VALUES (?, ?)', [ quantity,type_product]);
+        await conn.query('INSERT INTO stock ( product_id,quantity) VALUES (?, ?)', [ type_product, quantity]);
         res.status(201).json({ message: 'Stock updated successfully' });
         
     } catch (error) {

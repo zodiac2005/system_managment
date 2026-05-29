@@ -13,7 +13,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$database = "mydb";
+$database = "mydb_store";
 
 $conn = mysqli_connect($host, $username, $password, $database);
 if ($conn->connect_error) {
